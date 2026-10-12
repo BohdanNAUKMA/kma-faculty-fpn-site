@@ -1,0 +1,25 @@
+{% extends 'faculty/base.html' %}
+
+{% block title %}Головна | ФПрН НаУКМА{% endblock %}
+
+{% block content %}
+{% if faculty_info %}
+    <div class="p-4 p-md-5 mb-4 rounded text-white bg-dark">
+        <h1 class="display-5 fw-bold">{{ faculty_info.title }}</h1>
+        <p class="lead my-3">{{ faculty_info.description|linebreaksbr }}</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h4 class="card-title text-success mb-3">Контакти деканату</h4>
+            <div class="card-text text-secondary">
+                {{ faculty_info.contacts|linebreaksbr }}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Інформація про факультет ще не внесена в адмін-панелі.
+    </div>
+{% endif %}
+{% endblock %}
