@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Department, Program, Teacher, FacultyInfo
+from .models import Department, Program, Teacher, FacultyInfo, ExchangeProgram
+from django.utils import timezone
 
 # Create your views here.
 def home_view(request):
@@ -38,4 +39,12 @@ def department_detail_view(request, pk):
     return render(request, 'faculty/department_detail.html', {
         'department': department,
         'teachers': teachers
+    })
+
+def exchange_list_view(request):
+    """Список програм академічного обміну"""
+    programs = ExchangeProgram.objects.all().order_by('deadline')
+    return render(request, 'faculty/exchange_list.html', {
+        'exchange_programs': programs,
+        'today': timezone.now().date(),
     })

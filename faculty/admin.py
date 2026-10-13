@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Department, Program, Teacher, FacultyInfo
+from .models import Department, Program, Teacher, FacultyInfo, ExchangeProgram
 
 
 @admin.register(Department)
@@ -42,3 +42,10 @@ class FacultyInfoAdmin(admin.ModelAdmin):
         if self.model.objects.exists():
             return False
         return super().has_add_permission(request)
+
+
+@admin.register(ExchangeProgram)
+class ExchangeProgramAdmin(admin.ModelAdmin):
+    list_display = ('university', 'country', 'languages', 'seats', 'deadline')
+    list_filter = ('country', 'deadline')
+    search_fields = ('university', 'country', 'languages')

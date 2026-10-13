@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 class Department(models.Model):
     """Кафедра Факультету природничих наук (ФПрН)"""
@@ -122,3 +122,40 @@ class FacultyInfo(models.Model):
 
     def __str__(self):
         return self.title
+
+class ExchangeProgram(models.Model):
+    university = models.CharField(
+        max_length=255,
+        verbose_name="Назва університету"
+    )
+    country = models.CharField(
+        max_length=100,
+        default="",
+        verbose_name="Країна"
+    )
+    languages = models.CharField(
+        max_length=255,
+        verbose_name="Мови навчання"
+    )
+    seats = models.PositiveIntegerField(
+        verbose_name="Кількість місць"
+    )
+    deadline = models.DateField(
+        verbose_name="Дедлайн подачі"
+    )
+    description = models.TextField(
+        verbose_name="Опис програми"
+    )
+
+    class Meta:
+        verbose_name = "Програма обміну"
+        verbose_name_plural = "Програми обміну"
+        ordering = ["deadline"]
+
+    def __str__(self):
+        return f"{self.university} ({self.country})" if self.country else self.university
+
+    @property
+    def is_active(self):
+        """Чи триває ще прийом заявок станом на сьогодні"""
+        return self.deadline >= timezone.now().date()
