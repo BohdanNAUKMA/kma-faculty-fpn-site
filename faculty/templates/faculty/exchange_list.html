@@ -1,0 +1,44 @@
+{% extends 'faculty/base.html' %}
+
+{% block title %}Академічний обмін | ФПрН НаУКМА{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Програми академічного обміну</h2>
+    <span class="text-muted small">Поточна дата: {{ today|date:"d.m.Y" }}</span>
+</div>
+
+<div class="row g-4">
+    {% for item in exchange_programs %}
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <h5 class="card-title fw-bold text-dark mb-1">{{ item.university }}</h5>
+                        {% if item.country %}
+                            <span class="badge bg-light text-dark border">📍 {{ item.country }}</span>
+                        {% endif %}
+                    </div>
+                    {% if item.is_active %}
+                        <span class="badge bg-success">Прийом триває</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Прийом завершено</span>
+                    {% endif %}
+                </div>
+                
+                <p class="text-muted my-2">{{ item.description }}</p>
+                
+                <div class="mt-auto pt-3 border-top small text-secondary">
+                    <div><strong>Мови навчання:</strong> {{ item.languages }}</div>
+                    <div><strong>Кількість місць:</strong> {{ item.seats }}</div>
+                    <div><strong>Дедлайн подачі:</strong> <span class="fw-bold">{{ item.deadline|date:"d.m.Y" }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="alert alert-info">Програм обміну наразі немає.</div></div>
+    {% endfor %}
+</div>
+{% endblock %}

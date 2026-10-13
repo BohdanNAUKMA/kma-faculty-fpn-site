@@ -1,0 +1,37 @@
+{% extends 'faculty/base.html' %}
+
+{% block title %}Кафедри | ФПрН НаУКМА{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 fw-bold">Кафедри факультету</h2>
+
+<div class="row g-4">
+    {% for dept in departments %}
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="card-title mb-2">
+                    <a href="{% url 'department_detail' dept.pk %}" class="text-decoration-none text-dark">
+                        {{ dept.name }}
+                    </a>
+                </h4>
+                <p class="text-muted mb-3"><strong>Завідувач:</strong> {{ dept.head_name }}</p>
+                <h6 class="fw-bold small text-uppercase text-secondary">Випускова для спеціальностей:</h6>
+                <ul class="list-unstyled mb-0 ps-2">
+                    {% for prog in dept.programs.all %}
+                    <li>• <a href="{% url 'program_detail' prog.pk %}" class="text-decoration-none text-success">{{ prog.name }} ({{ prog.code }})</a></li>
+                    {% empty %}
+                    <li class="text-muted small">Немає закріплених спеціальностей</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer bg-transparent border-0 pb-3">
+                <a href="{% url 'department_detail' dept.pk %}" class="btn btn-sm btn-outline-success">Детальніше про кафедру →</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="alert alert-info">Кафедри ще не додані.</div></div>
+    {% endfor %}
+</div>
+{% endblock %}

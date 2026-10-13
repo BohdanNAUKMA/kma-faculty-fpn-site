@@ -1,0 +1,56 @@
+{% extends 'faculty/base.html' %}
+
+{% block title %}{{ department.name }} | ФПрН НаУКМА{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'department_list' %}">Кафедри</a></li>
+        <li class="breadcrumb-item active">{{ department.name }}</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <h1 class="card-title fw-bold">{{ department.name }}</h1>
+        <p class="lead text-secondary">Завідувач кафедри: <strong>{{ department.head_name }}</strong></p>
+
+        <h4 class="fw-bold mt-4 mb-3">Спеціальності кафедри</h4>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            {% for prog in department.programs.all %}
+            <a href="{% url 'program_detail' prog.pk %}" class="btn btn-outline-secondary btn-sm">
+                {{ prog.code }} {{ prog.name }}
+            </a>
+            {% empty %}
+            <span class="text-muted">Спеціальностей не знайдено</span>
+            {% endfor %}
+        </div>
+
+        <h4 class="fw-bold mt-4 mb-3">Викладацький склад</h4>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ПІБ</th>
+                        <th scope="col">Посада</th>
+                        <th scope="col">Науковий ступінь</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for teacher in teachers %}
+                    <tr>
+                        <td class="fw-bold">{{ teacher.name }}</td>
+                        <td>{{ teacher.position }}</td>
+                        <td><span class="badge bg-light text-dark border">{{ teacher.degree }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-3">Викладачів ще не додано</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
